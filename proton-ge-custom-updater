@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "╔═════════════════════════════════════════════════════════════════════╗"
-echo "║ This program will download and install the latest Proton-GE-Custom. ║"
-echo "║ Refer to github.com/GloriousEggroll/proton-ge-custom for more info. ║"
-echo "╚═════════════════════════════════════════════════════════════════════╝"
+echo "╔══════════════════════════════════════════════════════════════════════╗"
+echo "║  This program will download and install the latest Proton-GE-Custom  ║"
+echo "║  Refer to github.com/GloriousEggroll/proton-ge-custom for more info  ║"
+echo "╚══════════════════════════════════════════════════════════════════════╝"
 
 # Get the latest Proton-GE-Custom release (url and filename)
 url="$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep browser_download_url | cut -d '"' -f 4)"
@@ -14,6 +14,7 @@ if [ -d "/home/$(whoami)/.local/share/Steam/" ]; then
     cd "/home/$(whoami)/.local/share/Steam/"
     # Check if compatibilitytools.d folder exists, if not create one
     if [ ! -d "compatibilitytools.d" ]; then
+        echo "--> Creating folder for Steam compatibility tools..."
         mkdir "compatibilitytools.d"
     fi
     cd "compatibilitytools.d"
