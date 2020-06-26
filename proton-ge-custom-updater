@@ -1,0 +1,44 @@
+#!/bin/bash
+
+echo "╔═════════════════════════════════════════════════════════════════════╗"
+echo "║ This program will download and install the latest Proton-GE-Custom. ║"
+echo "║ Refer to github.com/GloriousEggroll/proton-ge-custom for more info. ║"
+echo "╚═════════════════════════════════════════════════════════════════════╝"
+
+# Get the latest Proton-GE-Custom release (url and filename)
+url="$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep browser_download_url | cut -d '"' -f 4)"
+filename="$(echo $url | sed s/.*\\///)"
+
+# Check if steam is properly installed
+if [ -d "/home/$(whoami)/.local/share/Steam/" ]; then
+    cd "/home/$(whoami)/.local/share/Steam/"
+    # Check if compatibilitytools.d folder exists, if not create one
+    if [ -d "compatibilitytools.d" ]; then
+        cd "compatibilitytools.d"
+    else
+        echo "--> Folder for compatibility tools does not exist. Creating one now..."
+        mkdir "compatibilitytools.d"
+        cd "compatibilitytools.d"
+    fi
+    # Check if current release is already installed
+    if [ -d $(echo $filename | sed s/\\.tar\\.gz//) ]; then
+        echo "--> Current version is already installed. Exiting..."
+        exit 1
+    elif [ -f $filename ]; then
+        echo "--> Current version is already installed. Exiting..."
+        exit 1
+    else
+        # Download latest release, extract the files and delete the archive
+        echo "--> Downloading $filename..."
+        wget -q "$url"
+        echo "--> Extracting $filename..."
+        tar -xf "$filename"
+        echo "--> Removing the compressed archive..."
+        rm "$filename"
+        echo "--> Done. Please check the command line for potential errors."
+        echo "--> Restart Steam to use the new version."
+    fi
+else
+    echo "--> Steam does not seem to be installed. Please make sure everything is installed properly."
+    exit 1
+fi
