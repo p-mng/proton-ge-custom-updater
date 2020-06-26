@@ -9,7 +9,9 @@ echo "╚═══════════════════════�
 url="$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep browser_download_url | cut -d '"' -f 4)"
 filename="$(echo $url | sed 's|.*/||')"
 
-# Check if steam is properly installed
+echo ""
+echo -e "\033[1mChecking if Steam is installed as a native package\033[0m"
+# Check if Steam is properly installed
 if [ -d "/home/$(whoami)/.local/share/Steam" ]; then
     cd "/home/$(whoami)/.local/share/Steam"
     # Check if compatibilitytools.d folder exists, if not create one
