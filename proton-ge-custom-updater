@@ -10,8 +10,8 @@ url="$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/rel
 filename="$(echo $url | sed 's|.*/||')"
 
 # Check if steam is properly installed
-if [ -d "/home/$(whoami)/.local/share/Steam/" ]; then
-    cd "/home/$(whoami)/.local/share/Steam/"
+if [ -d "/home/$(whoami)/.local/share/Steam" ]; then
+    cd "/home/$(whoami)/.local/share/Steam"
     # Check if compatibilitytools.d folder exists, if not create one
     if [ ! -d "compatibilitytools.d" ]; then
         echo "--> Creating folder for Steam compatibility tools..."
@@ -20,9 +20,6 @@ if [ -d "/home/$(whoami)/.local/share/Steam/" ]; then
     cd "compatibilitytools.d"
     # Check if current release is already installed
     if [ -d $(echo $filename | sed 's|\.tar\.gz||') ]; then
-        echo "--> Current version is already installed. Exiting..."
-        exit 1
-    elif [ -f $filename ]; then
         echo "--> Current version is already installed. Exiting..."
         exit 1
     else
