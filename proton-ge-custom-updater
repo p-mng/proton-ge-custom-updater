@@ -23,7 +23,6 @@ if [ -d "/home/$(whoami)/.local/share/Steam" ]; then
     # Check if current release is already installed
     if [ -d $(echo $filename | sed 's|\.tar\.gz||') ]; then
         echo "--> Current version is already installed. Exiting..."
-        exit 1
     else
         # Download latest release, extract the files and delete the archive
         echo "--> Downloading $filename..."
@@ -35,6 +34,36 @@ if [ -d "/home/$(whoami)/.local/share/Steam" ]; then
         echo "--> Done. Please check the command line for errors and restart Steam for the changes to take effect."
     fi
 else
-    echo "--> Steam does not seem to be installed. Please make sure everything is installed properly."
+    echo "--> Steam does not seem to be installed as a native package. Please make sure everything is installed properly."
+fi
+
+echo ""
+echo -e "\033[1mChecking if Steam is installed as a Flatpak'd package\033[0m"
+# Check if steam is properly installed as Flatpak
+if [ -d "/home/$(whoami)/.var/app/com.valvesoftware.Steam/.local/share/Steam" ]; then
+    cd "/home/$(whoami)/.var/app/com.valvesoftware.Steam/.local/share/Steam"
+    # Check if compatibilitytools.d folder exists, if not create one
+    if [ ! -d "compatibilitytools.d" ]; then
+        echo "--> Creating folder for Steam compatibility tools..."
+        mkdir "compatibilitytools.d"
+    fi
+    cd "compatibilitytools.d"
+    # Check if current release is already installed
+    if [ -d $(echo $filename | sed 's|\.tar\.gz||') ]; then
+        echo "--> Current version is already installed. Exiting..."
+        exit 1
+    else
+        # Download latest release, extract the files and delete the archive
+        echo "--> Downloading $filename..."
+        curl -sL "$url" --output "$filename"
+        echo "--> Extracting $filename..."
+        tar -xf "$filename"
+        echo "--> Removing the compressed archive..."
+        rm "$filename"
+        echo "--> Done. Please check the command line for errors and restart Steam for the changes to take effect."
+        exit 1
+    fi
+else
+    echo "--> Steam does not seem to be installed as a Flatpak'd package. Please make sure everything is installed properly."
     exit 1
 fi
