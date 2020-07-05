@@ -13,8 +13,7 @@ filename="$(echo $url | sed 's|.*/||')"
 install() {
     # Check if the given folder exists, exit function if this is not the case
     if [ ! -d "$1" ]; then
-        echo "Error $1"
-        return [n]
+        return 1
     fi
     # cd into the given path
     cd "$1"
@@ -42,7 +41,7 @@ install() {
 # Check if steam is installed regularly, either in one of the two locations
 if [ -d "$HOME/.local/share/Steam" ] || [ -d "$HOME/.steam/steam" ]; then
     echo "--> Regular Steam installation found. Installing..."
-    install "$HOME/.local/share/Steam" || install "$HOME/.steam/steam"
+    install "$HOME/.local/share/Steam"; install "$HOME/.steam/steam"
 else
     echo "--> Steam does not seem to be installed as a regular package. No changes were made."
 fi
@@ -50,7 +49,7 @@ fi
 # Check if steam is installed as Flatpak
 if [ -d "$HOME/.var/app/com.valvesoftware.Steam/.local/share/Steam" ] || [ -d "$HOME/.var/app/com.valvesoftware.Steam/.steam/steam" ]; then
     echo "--> Flatpak Steam installation found. Installing..."
-    install "$HOME/.var/app/com.valvesoftware.Steam/.local/share/Steam" || install "$HOME/.var/app/com.valvesoftware.Steam/.steam/steam"
+    install "$HOME/.var/app/com.valvesoftware.Steam/.local/share/Steam"; install "$HOME/.var/app/com.valvesoftware.Steam/.steam/steam"
 else
     echo "--> Steam does not seem to be installed as Flatpak. No changes were made."
 fi
