@@ -26,6 +26,7 @@ install() {
     # Check if current release is already installed
     if [ -d $(echo $filename | sed 's|\.tar\.gz||') ]; then
         echo "--> Current version is already installed."
+        return 0
     else
         # Download latest release, extract the files and delete the archive
         echo "--> Downloading $filename..."
@@ -35,13 +36,14 @@ install() {
         echo "--> Removing the compressed archive..."
         rm "$filename"
         echo "--> Done. Please check the command line for errors and restart Steam for the changes to take effect."
+        return 0
     fi
 }
 
 # Check if steam is installed regularly, either in one of the two locations
 if [ -d "$HOME/.local/share/Steam" ] || [ -d "$HOME/.steam/steam" ]; then
     echo "--> Regular Steam installation found. Installing..."
-    install "$HOME/.local/share/Steam"; install "$HOME/.steam/steam"
+    install "$HOME/.local/share/Steam" || install "$HOME/.steam/steam"
 else
     echo "--> Steam does not seem to be installed as a regular package. No changes were made."
 fi
@@ -49,7 +51,7 @@ fi
 # Check if steam is installed as Flatpak
 if [ -d "$HOME/.var/app/com.valvesoftware.Steam/.local/share/Steam" ] || [ -d "$HOME/.var/app/com.valvesoftware.Steam/.steam/steam" ]; then
     echo "--> Flatpak Steam installation found. Installing..."
-    install "$HOME/.var/app/com.valvesoftware.Steam/.local/share/Steam"; install "$HOME/.var/app/com.valvesoftware.Steam/.steam/steam"
+    install "$HOME/.var/app/com.valvesoftware.Steam/.local/share/Steam" || install "$HOME/.var/app/com.valvesoftware.Steam/.steam/steam"
 else
     echo "--> Steam does not seem to be installed as Flatpak. No changes were made."
 fi
