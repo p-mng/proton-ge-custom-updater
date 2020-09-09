@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "╔══════════════════════════════════════════════════════════════════════╗"
 echo "║  This program will download and install the latest Proton-GE-Custom  ║"
