@@ -31,7 +31,7 @@ install() {
     fi
     cd "compatibilitytools.d"
     # Check if current release is already installed
-    if [ -d $(echo $filename | sed 's|\.tar\.gz||') ]; then
+    if [ -d $(echo $filename | sed 's|\.zip||') ]; then
         echo "--> Current version is already installed."
         return 0
     else
