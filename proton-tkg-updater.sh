@@ -43,7 +43,8 @@ install() {
         # Additional steps required by Proton-TKG (tar within zip)
         unzip -qq "$filename" -d "$(echo $filename | sed 's|\.zip||')"
         cd "$(echo $filename | sed 's|\.zip||')"
-        tar -xf "proton_dist.tar.gz"
+        mkdir "dist"
+        tar -xf "proton_dist.tar.gz" -C "dist"
         rm "proton_dist.tar.gz"
         cd ..
         echo "--> Removing the compressed archive..."
