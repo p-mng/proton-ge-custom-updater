@@ -35,7 +35,7 @@ install() {
     else
         # Download latest release, extract the files and delete the archive
         echo "--> Downloading $filename..."
-        curl -sL "$url" --output "$filename"
+        curl -L "$url" --output "$filename"
         echo "--> Extracting $filename..."
         tar -xf "$filename"
         echo "--> Removing the compressed archive..."

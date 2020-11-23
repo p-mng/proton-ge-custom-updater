@@ -37,7 +37,7 @@ install() {
     else
         # Download latest release, extract the files and delete the archive
         echo "--> Downloading $filename..."
-        curl -sL "$url" --output "$filename"
+        curl -L "$url" --output "$filename"
         echo "--> Extracting $filename..."
         mkdir "$(echo $filename | sed 's|\.zip||')"
         # Additional steps required by Proton-TKG (tar within zip)
