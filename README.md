@@ -1,6 +1,6 @@
 ## Proton updater scripts
 
-Simple shell scripts to automatically download and install the latest modified Proton distributions by [GloriousEggroll](https://github.com/GloriousEggroll/proton-ge-custom) and [TkG](https://github.com/Frogging-Family/wine-tkg-git).
+Simple shell scripts to automatically download and install the latest modified Proton distributions by [GloriousEggroll](https://github.com/GloriousEggroll/proton-ge-custom) and [TkG](https://github.com/Frogging-Family/wine-tkg-git). `wine-tkg-git` is also supported (Arch Linux only).
 
 If you want to use the scripts with non-POSIX shells like fish, run them using the `sh ./proton-ge-custom-updater.sh` command. Those shells are [not POSIX compliant](https://stackoverflow.com/a/48735565) and supporting them would make the scripts unnecessarily complex.
 
@@ -12,6 +12,7 @@ If you want to use the scripts with non-POSIX shells like fish, run them using t
 - GNU coreutils (busybox may also work but is not supported)
 - `curl`
 - `unzip` for the proton-tkg updater
+- `pacman` for the wine-tkg-git updater
 
 ## Possible improvements
 
