@@ -14,7 +14,7 @@ if [ "$(id -u)" = "0" ]; then
 	pacman -U "$filename"
 elif [ $(which sudo) ]; then
 	echo "--> Not running as root. Trying to elevate through sudo..."
-	sudo pacman -U "$filename"
+	sudo pacman --needed -U "$filename"
 else
 	echo "--> Error: Please run the script with root privileges."
 fi
