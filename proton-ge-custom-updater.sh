@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Get the latest Proton-GE-Custom release (url and filename)
-url="$(curl -s 'https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest' | grep 'browser_download_url' | cut -d \" -f 4)"
-filename="$(echo '$url' | sed 's|.*/||')"
+url="$(curl -s "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest" | grep "browser_download_url" | cut -d \" -f 4)"
+filename="$(echo "$url" | sed "s|.*/||")"
 
 # Installation routine
 install() {
@@ -29,7 +29,7 @@ install() {
     fi
     cd "compatibilitytools.d"
     # Check if current release is already installed
-    if [ -d $(echo '$filename' | sed 's|\.tar\.gz||') ]; then
+    if [ -d "$(echo "$filename" | sed "s|\.tar\.gz||")" ]; then
         echo "--> Current version is already installed."
         return 0
     else

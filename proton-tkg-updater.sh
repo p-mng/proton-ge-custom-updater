@@ -3,8 +3,8 @@
 # This script is a forked and adjusted version from the Proton-GE-Custom updater
 
 # Get the latest Proton-tkg release (url and filename)
-url="$(curl -s 'https://api.github.com/repos/Frogging-Family/wine-tkg-git/releases/latest' | grep 'browser_download_url' | grep 'proton' | cut -d \" -f 4)"
-filename="$(echo '$url' | sed 's|.*/||')"
+url="$(curl -s "https://api.github.com/repos/Frogging-Family/wine-tkg-git/releases/latest" | grep "browser_download_url" | grep "proton" | cut -d \" -f 4)"
+filename="$(echo "$url" | sed "s|.*/||")"
 
 # Installation routine
 install() {
@@ -31,7 +31,7 @@ install() {
     fi
     cd "compatibilitytools.d"
     # Check if current release is already installed
-    if [ -d $(echo '$filename' | sed 's|\.zip||') ]; then
+    if [ -d "$(echo "$filename" | sed "s|\.zip||")" ]; then
         echo "--> Current version is already installed."
         return 0
     else
@@ -39,10 +39,10 @@ install() {
         echo "--> Downloading $filename..."
         curl -L "$url" --output "$filename"
         echo "--> Extracting $filename..."
-        mkdir "$(echo '$filename' | sed 's|\.zip||')"
+        mkdir "$(echo "$filename" | sed "s|\.zip||")"
         # Additional steps required by Proton-TkG (tar within zip has to be unpacked)
-        unzip -qq "$filename" -d "$(echo '$filename' | sed 's|\.zip||')"
-        cd "$(echo '$filename' | sed 's|\.zip||')"
+        unzip -qq "$filename" -d "$(echo "$filename" | sed "s|\.zip||")"
+        cd "$(echo "$filename" | sed "s|\.zip||")"
         mkdir "dist"
         tar -xf "proton_dist.tar.gz" -C "dist"
         rm "proton_dist.tar.gz"
