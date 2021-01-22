@@ -1,0 +1,19 @@
+# Maintainer: Patrick M. <65464529+p-mng@users.noreply.github.com>
+
+pkgname=proton-ge-custom-updater
+pkgver=0.1
+pkgrel=1
+pkgdesc="Simple updater for custom Proton distributions"
+arch=('any')
+url="https://github.com/p-mng/proton-ge-custom-updater"
+license=('GPL3')
+depends=('sh' 'coreutils' 'curl' 'unzip')
+source=("https://github.com/p-mng/$pkgname/archive/v$pkgver.tar.gz")
+md5sums=('9ce8fec8d1c6a55bb88a00da3d5d3067')
+
+package() {
+        cd "$srcdir/$pkgname-$pkgver"
+        install -Dm755 proton-ge-custom-updater.sh ${pkgdir}/usr/bin/proton-ge-custom-updater
+        install -Dm755 proton-tkg-updater.sh ${pkgdir}/usr/bin/proton-tkg-updater
+        install -Dm755 wine-tkg-git-updater.sh ${pkgdir}/usr/bin/wine-tkg-git-updater
+}
