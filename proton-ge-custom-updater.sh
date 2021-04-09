@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Get the latest Proton-GE-Custom release (url and filename)
-url="$(curl -s "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest" | grep "browser_download_url" | cut -d \" -f 4)"
+url="$(curl -s "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest" | grep "browser_download_url.*\.tar\.gz" | cut -d \" -f 4)"
 filename="$(echo "$url" | sed "s|.*/||")"
 
 # Installation routine
@@ -36,6 +36,28 @@ install() {
         # Download latest release, extract the files and delete the archive
         echo "--> Downloading $filename..."
         curl -L "$url" --output "$filename"
+        # Verify file integrity if sha512sum is availible and a hash can be obtained
+        if hash sha512sum && sha512_hash=$(curl -Lf "${url%.tar.gz}.sha512sum" 2>/dev/null); then
+          echo "--> Verfiying file integrity..."
+          if ! sha512sum -c <<< "${sha512_hash%% *}  ${filename}"; then
+            # If the session is interactive, we ask the user whether or not to accept a failed checksum,
+            # but permissively default to continuing if the session is not interactive or no response is given.
+            if [[ -v PS1 ]] || [[ $- = *i* ]]; then
+              while true; do
+                read -p "--> File integrity check failed. Continue? ([Y]/n) "
+                case "$REPLY" in
+                  [yY][eE][sS]|[yY]|'') break ;;
+                  [nN][oO]|[nN]) exit 1 ;;
+                  *) echo "Invalid input..." ;;
+                esac
+              done
+            else
+              echo "--> WARNING: File integrity check failed."
+            fi
+          fi
+        else
+          echo "--> Skipping file integrity check (hash not found)."
+        fi
         echo "--> Extracting $filename..."
         tar -xf "$filename"
         echo "--> Removing the compressed archive..."
