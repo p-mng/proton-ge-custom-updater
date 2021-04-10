@@ -39,13 +39,14 @@ install() {
         # Verify file integrity if sha512sum is availible and a hash can be obtained
         if hash sha512sum && sha512_hash=$(curl -Lf "${url%.tar.gz}.sha512sum" 2>/dev/null); then
             echo "--> Verfiying file integrity..."
-            if ! sha512sum -c <<< "${sha512_hash%% *}  ${filename}"; then
-                # If the session is interactive, we ask whether
+            if ! printf '%s' "${sha512_hash%% *}  ${filename}" | sha512sum -c /dev/stdin; then
+                # If stdin is a terminal, we ask whether
                 # or not to accept a failed checksum,
                 # but otherwise exit.
-                if [[ -v PS1 ]] || [[ $- = *i* ]]; then
+                if [ -t 0 ]; then
                     while true; do
-                        read -p "--> File integrity check failed. Continue? (y/[N]) "
+                        printf '%s' "--> File integrity check failed. Continue?  (y/[N]) "
+                        read -r REPLY
                         case "$REPLY" in
                             [yY][eE][sS]|[yY]) break ;;
                             [nN][oO]|[nN]|'') exit 1 ;;
