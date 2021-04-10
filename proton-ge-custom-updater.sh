@@ -41,18 +41,19 @@ install() {
           echo "--> Verfiying file integrity..."
           if ! sha512sum -c <<< "${sha512_hash%% *}  ${filename}"; then
             # If the session is interactive, we ask the user whether or not to accept a failed checksum,
-            # but permissively default to continuing if the session is not interactive or no response is given.
+            # but otherwise exit.
             if [[ -v PS1 ]] || [[ $- = *i* ]]; then
               while true; do
-                read -p "--> File integrity check failed. Continue? ([Y]/n) "
+                read -p "--> File integrity check failed. Continue? (y/[N]) "
                 case "$REPLY" in
-                  [yY][eE][sS]|[yY]|'') break ;;
-                  [nN][oO]|[nN]) exit 1 ;;
+                  [yY][eE][sS]|[yY]) break ;;
+                  [nN][oO]|[nN]|'') exit 1 ;;
                   *) echo "Invalid input..." ;;
                 esac
               done
             else
-              echo "--> WARNING: File integrity check failed."
+              echo "--> ERROR: File integrity check failed." 1>&2
+              exit 1
             fi
           fi
         else
