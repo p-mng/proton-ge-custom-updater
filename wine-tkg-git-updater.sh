@@ -6,17 +6,17 @@ filename="$(echo "$url" | sed "s|.*/||")"
 
 # Check if cache dir exists
 if [ ! -d "$HOME/.cache/wine-tkg-git-updater" ]; then
-	mkdir -p "$HOME/.cache/wine-tkg-git-updater"
+    mkdir -p "$HOME/.cache/wine-tkg-git-updater"
 fi
 
 # Check if current version was alredy downloaded, and if not do so
 if [ ! -f "$HOME/.cache/wine-tkg-git-updater/$filename" ]; then
-	echo "--> Downloading..."
-	curl -L "$url" -o "$HOME/.cache/wine-tkg-git-updater/$filename"
+    echo "--> Downloading..."
+    curl -L "$url" -o "$HOME/.cache/wine-tkg-git-updater/$filename"
 else
-	echo "--> Current version has already been downloaded. Trying to install anyway..."
+    echo "--> Current version has already been downloaded. Trying to install anyway..."
 fi
-	
+    
 # Install the package
 if [ "$(id -u)" = "0" ]; then
     echo "--> Installing as root..."

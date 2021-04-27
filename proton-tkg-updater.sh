@@ -40,7 +40,7 @@ install() {
         curl -L "$url" --output "$filename"
         echo "--> Extracting $filename..."
         mkdir "$(echo "$filename" | sed "s|\.tar\..*||")"
-	tar -xf "$filename" -C "$(echo "$filename" | sed "s|\.tar\..*||")" 
+    tar -xf "$filename" -C "$(echo "$filename" | sed "s|\.tar\..*||")"
         echo "--> Removing the compressed archive..."
         rm "$filename"
         echo "--> Done. Please check the command line for errors and restart Steam for the changes to take effect."
