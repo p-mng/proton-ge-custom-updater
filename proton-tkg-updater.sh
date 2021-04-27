@@ -31,7 +31,7 @@ install() {
     fi
     cd "compatibilitytools.d"
     # Check if current release is already installed
-    if [ -d "$(echo "$filename" | sed "s|\.zip||")" ]; then
+    if [ -d "$(echo "$filename" | sed "s|\.tar\..*||")" ]; then
         echo "--> Current version is already installed."
         return 0
     else
@@ -39,14 +39,8 @@ install() {
         echo "--> Downloading $filename..."
         curl -L "$url" --output "$filename"
         echo "--> Extracting $filename..."
-        mkdir "$(echo "$filename" | sed "s|\.zip||")"
-        # Additional steps required by Proton-TkG (tar within zip has to be unpacked)
-        unzip -qq "$filename" -d "$(echo "$filename" | sed "s|\.zip||")"
-        cd "$(echo "$filename" | sed "s|\.zip||")"
-        mkdir "dist"
-        tar -xf "proton_dist.tar.gz" -C "dist"
-        rm "proton_dist.tar.gz"
-        cd ..
+        mkdir "$(echo "$filename" | sed "s|\.tar\..*||")"
+	tar -xf "$filename" -C "$(echo "$filename" | sed "s|\.tar\..*||")" 
         echo "--> Removing the compressed archive..."
         rm "$filename"
         echo "--> Done. Please check the command line for errors and restart Steam for the changes to take effect."
