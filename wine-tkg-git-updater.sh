@@ -19,14 +19,17 @@ fi
     
 # Install the package
 if [ "$(id -u)" = "0" ]; then
-    echo "--> Installing as root..."
+    printf "%s\n\n" "--> Installing as root..."
     echo
     pacman --needed -U "$HOME/.cache/wine-tkg-git-updater/$filename"
     echo
-elif [ "$(which sudo)" ]; then
-    echo "--> Not running as root. Trying to elevate through sudo..."
-    echo
+elif which sudo > /dev/null 2>&1; then
+    printf "%s\n\n" "--> Not running as root. Trying to elevate through sudo..."
     sudo pacman --needed -U "$HOME/.cache/wine-tkg-git-updater/$filename"
+    echo
+elif which doas > /dev/null 2>&1; then
+    printf "%s\n\n" "--> Not running as root. Trying to elevate through doas..."
+    doas pacman --needed -U "$HOME/.cache/wine-tkg-git-updater/$filename"
     echo
 else
     echo "--> Error: Please run the script with root privileges."
