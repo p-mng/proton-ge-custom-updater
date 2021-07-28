@@ -13,7 +13,7 @@ install() {
     # cd into the given path
     cd "$1"
     # Check if Steam is installed in current folder or if the script has to follow a symlink (usually in ~/.steam)
-    # only relevant for some distros/versions (github.com/patrickm32/proton-ge-custom-updater/issues/3)
+    # only relevant for some distros/versions (issue 3)
     if [ ! -f "steam.sh" ]; then
         # Follow symlink if there is no steam.sh
         if [ ! -f "./steam/steam.sh" ]; then
@@ -37,7 +37,7 @@ install() {
         echo "--> Downloading $filename..."
         curl -L "$url" --output "$filename"
         # Verify file integrity if sha512sum is availible and a hash can be obtained
-        if hash sha512sum && sha512_hash=$(curl -Lf "${url%.tar.gz}.sha512sum" 2>/dev/null); then
+        if hash sha512sum && sha512_hash=$(curl -Lf "${url%.tar.gz}.sha512sum" 2> /dev/null); then
             echo "--> Verfiying file integrity..."
             if ! printf '%s' "${sha512_hash%% *}  ${filename}" | sha512sum -c /dev/stdin; then
                 # If stdin is a terminal, we ask whether
@@ -58,8 +58,8 @@ install() {
                     exit 1
                 fi
             fi
-          else
-              echo "--> Skipping file integrity check (hash not found)."
+        else
+            echo "--> Skipping file integrity check (hash not found)."
         fi
         echo "--> Extracting $filename..."
         tar -xf "$filename"
