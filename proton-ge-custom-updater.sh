@@ -65,7 +65,7 @@ install() {
         tar -xf "$filename"
         echo "--> Removing the compressed archive & older versions of Proton-GE..."
         rm "$filename"
-         ls -d GE-Proton* | head -n -2 | xargs -r rm -r
+        ls -d GE-Proton* | head -n -2 | xargs -r rm -r
         echo "--> Done. Please check the command line for errors and restart Steam for the changes to take effect."
         return 0
     fi
